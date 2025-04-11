@@ -3,7 +3,7 @@
 
 static void	ft_mov(t_mlx *mlx, int x, int y)
 {
-	ft_map_gen(mlx);
+	ft_map_genrate(mlx);
 	ft_mlx_print_img(mlx, mlx->img->player, x, y);
 }
 

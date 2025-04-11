@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wimam <walidimam69gmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/21 16:27:59 by wimam             #+#    #+#             */
+/*   Updated: 2025/01/07 10:00:24 by wimam            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 //Header Guard
 #ifndef SO_LONG_H
@@ -59,14 +70,12 @@ typedef struct s_mlx
 t_mlx	*ft_mlx_init(char *str);
 char	**ft_get_map(int fd);
 int		ft_input(int keycode, t_mlx *mlx);
-void	ft_map_gen(t_mlx *mlx);
+void	ft_map_generate(t_mlx *mlx);
 void	ft_mlx_print_img(t_mlx *mlx, void *img, int x, int y);
 int		ft_exit(t_mlx *mlx);
 int		ft_get_coordinates(char **map, int obg, int axis);
-int		ft_get_win_size(char **map, int axis);
 char	*ft_itoa(int n);
 int		ft_key_count(char **map);
-void	ft_win(t_mlx *mlx);
 void	ft_free_map(char **map);
 t_img	*ft_get_images(t_mlx *mlx);
 char	**ft_ckeck_map(char **map);

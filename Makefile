@@ -1,4 +1,4 @@
-SRC =	srcs/ft_check.c				\
+SRC =	srcs/ft_checkmap.c				\
 		srcs/ft_exit.c				\
 		srcs/ft_input.c				\
 		srcs/ft_map.c				\
@@ -9,23 +9,10 @@ SRC =	srcs/ft_check.c				\
 		srcs/ft_check2.c			\
 		srcs/main.c					\
 
-BSRC = 	bonus/ft_animation_bonus.c				\
-		bonus/ft_check_bonus.c				\
-		bonus/ft_exit_bonus.c				\
-		bonus/ft_input_bonus.c				\
-		bonus/ft_map_bonus.c				\
-		bonus/ft_mlx_bonus.c				\
-		bonus/ft_utils_bonus.c				\
-		bonus/get_next_line_bonus.c			\
-		bonus/get_next_line_utils_bonus.c	\
-		bonus/ft_check2_bonus.c				\
-		bonus/main_bonus.c					\
-
 OBG = $(SRC:.c=.o)
 BOBG = $(BSRC:.c=.o)
 
 NAME = so_long
-BNAME = so_long_bonus
 
 I = -I ./includes/
 
@@ -33,22 +20,15 @@ L = -L ./libraries/ -lmlx_Linux -lX11 -lXext
 FLAGS = -g -Wall -Wextra -Werror
 
 all: $(NAME)
-bonus: $(BNAME)
 
 $(NAME): $(OBG)
 	cc $(OBG) $(L) -o $@
-
-$(BNAME): $(BOBG)
-	cc $(BOBG) $(L) -o $@
 
 %.o: %.c
 	cc -c $(FLAGS) $(I) $^ -o $@
 
 clean:
 	rm -f $(OBG)
-
-bclean:
-	rm -f $(BOBG) $(NAME)
 
 fclean: bclean clean
 	rm -f $(NAME) $(BNAME)

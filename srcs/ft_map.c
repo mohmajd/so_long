@@ -1,5 +1,4 @@
 
-
 #include "so_long.h"
 
 int	ft_get_coordinates(char **map, int obg, int axis)
@@ -79,7 +78,7 @@ char	**ft_get_map(int fd)
 	return (map);
 }
 
-void	ft_map_gen(t_mlx *mlx)
+void	ft_map_generate(t_mlx *mlx)
 {
 	int	i;
 	int	j;

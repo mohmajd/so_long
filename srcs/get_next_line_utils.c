@@ -16,42 +16,14 @@ char	*ft_init(char *str)
 	return (str);
 }
 
-int	ft_strlen(char *str)
-{
-	int	len;
-
-	if (!str)
-		return (0);
-	len = 0;
-	while (str[len] != '\0')
-		len++;
-	return (len);
-}
-
-int	ft_new_line_check(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*ft_strljoin(char *s1, char *s2, int size)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
 	int		len;
 	char	*buffer;
 
-	len = ft_strlen(s1) + size;
+	len = ft_strlen(s1) + ft_strlen(s2);
 	buffer = malloc(len + 1);
 	if (!buffer || !s2)
 		return (NULL);
@@ -61,7 +33,7 @@ char	*ft_strljoin(char *s1, char *s2, int size)
 	while (s1[++i] != '\0')
 		buffer[i] = s1[i];
 	j = 0;
-	while (s2[j] != '\0' && j < size)
+	while (s2[j] != '\0')
 	{
 		buffer[i + j] = s2[j];
 		j++;
@@ -71,26 +43,66 @@ char	*ft_strljoin(char *s1, char *s2, int size)
 	return (buffer);
 }
 
-char	*ft_strdup(char *s)
+char	*ft_strcpy(char *dst, char *src)
 {
-	char	*dup;
-	int		len;
-	int		i;
+	int	i;
 
-	len = 0;
-	if (!s)
-		return (NULL);
-	while (s[len] != '\0')
-		len++;
-	dup = malloc(len + 1);
-	if (!dup)
-		return (NULL);
 	i = 0;
-	while (i < len)
+	while (src[i] != '\0')
 	{
-		dup[i] = s[i];
+		dst[i] = src[i];
 		i++;
 	}
-	dup[i] = '\0';
-	return (dup);
+	dst[i] = '\0';
+	return (dst);
+}
+
+int	ft_strlen(char *s)
+{
+	int	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strchr(char *s, int c)
+{
+	int		i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+	{
+		if (s[i] == c)
+			return ((char *)s + i);
+		i++;
+	}
+	if (c == '\0')
+		return ((char *)s + i);
+	return (NULL);
+}
+
+char	*ft_strdup(char *s1)
+{
+	int			len;
+	char		*buffer;
+	int			i;
+
+	len = ft_strlen(s1);
+	buffer = malloc(len + 1);
+	if (!buffer)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		buffer[i] = s1[i];
+		i++;
+	}
+	buffer[i] = '\0';
+	return (buffer);
 }

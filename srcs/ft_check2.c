@@ -7,18 +7,18 @@ typedef struct s_point
 	int	y;
 }t_point;
 
-char	**ft_get_map_cpy(char **map, int max_y, int max_x)
+char	**ft_get_map_cpy(char **map, int map_y, int map_x)
 {
 	char	**map_cpy;
 	int		i;
 	int		j;
 
-	map_cpy = malloc((max_y + 1) * sizeof(char **));
+	map_cpy = malloc((map_y + 1) * sizeof(char **));
 	i = 0;
 	while (map[i] != NULL)
 	{
 		j = 0;
-		map_cpy[i] = malloc(max_x);
+		map_cpy[i] = malloc(map_x);
 		while (map[i][j] != '\n')
 		{
 			map_cpy[i][j] = map[i][j];

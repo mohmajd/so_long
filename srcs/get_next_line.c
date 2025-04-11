@@ -1,102 +1,95 @@
-
 #include "get_next_line.h"
-
-static char	*ft_read(int fd)
+static char	*ft_read(int fd, char *old)
 {
-	int		read_byte;
 	char	*buffer;
 	char	*tmp;
+	int		count;
 
-	tmp = malloc(BUFFER_SIZE + 1);
-	if (!tmp)
-		return (NULL);
-	tmp[BUFFER_SIZE] = '\0';
-	read_byte = 0;
-	buffer = ft_init(NULL);
-	read_byte = read(fd, tmp, BUFFER_SIZE);
-	while (read_byte > 0)
-	{
-		buffer = ft_strljoin(buffer, tmp, read_byte);
-		if (ft_new_line_check(tmp))
-			break ;
-		read_byte = read(fd, tmp, BUFFER_SIZE);
-	}
-	free(tmp);
-	if (read_byte <= 0 && !buffer)
-		return (NULL);
-	return (buffer);
-}
-
-static char	*ft_get_data(int fd, char *old)
-{
-	char	*buffer;
-	char	*data;
-
-	if (ft_new_line_check(old))
+	if (ft_strchr(old, '\n'))
 		return (old);
-	if (!old)
-		old = ft_init(NULL);
-	buffer = ft_read(fd);
-	data = ft_strljoin(old, buffer, ft_strlen(buffer));
-	free(buffer);
-	return (data);
+	buffer = malloc(1);
+	buffer[0] = '\0';
+	tmp = (char *)malloc(BUFFER_SIZE + 1);
+	if (!tmp)
+	{
+		free (buffer);
+		return (NULL);
+	}
+	tmp[BUFFER_SIZE] = '\0';
+	count = read(fd, tmp, BUFFER_SIZE);
+	while (count > 0)
+	{
+		tmp[count] = '\0';
+		buffer = ft_strjoin(buffer, tmp);
+		if (ft_strchr(tmp, '\n'))
+			break ;
+		count = read(fd, tmp, BUFFER_SIZE);
+	}
+	return (free(tmp), free (buffer), ft_strjoin(old, buffer));
 }
 
-static char	*ft_get_line(char	*data)
+static char	*ft_line(char *str)
 {
+	int		y;
 	int		i;
 	char	*line;
 
-	if (!data)
+	if (*str == '\0')
 		return (NULL);
-	if (*data == '\0')
-		return (NULL);
-	i = 0;
-	while (data[i] != '\0' && data[i] != '\n')
-		i++;
-	line = malloc(i + 1 + 1);
+	y = 0;
+	while (str[y] != '\0' && str[y] != '\n' && (str[y] > 31 && str[y] < 127))
+		y++;
+	if (str[y] == '\n')
+		line = malloc(y + 2);
+	if (str[y] == '\0')
+		line = malloc(y + 1);
 	if (!line)
 		return (NULL);
 	i = 0;
-	while (data[i] != '\0' && data[i] != '\n')
+	while (i < y)
 	{
-		line[i] = data[i];
+		line[i] = str[i];
 		i++;
 	}
-	line[i] = '\n';
-	line[++i] = '\0';
+	if (str[y] == '\n')
+		line[i++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 
-static char	*ft_update_data(char *text)
+static char	*ft_rest(char *str)
 {
-	int		trim_len;
-	int		text_len;
-	char	*new_text;
+	char	*start;
+	char	*rest;
 
-	if (!text)
+	start = ft_strchr(str, '\n');
+	if (start != NULL)
+		start++;
+	if (start == NULL || *start == '\0')
+	{
+		free (str);
 		return (NULL);
-	text_len = ft_strlen(text);
-	trim_len = 0;
-	while (text[trim_len] != '\0' && text[trim_len] != '\n')
-		trim_len++;
-	if (trim_len == text_len)
-		return (free(text), NULL);
-	trim_len++;
-	new_text = ft_strdup(text + trim_len);
-	free(text);
-	return (new_text);
+	}
+	rest = malloc(ft_strlen(start) + 1);
+	if (!rest)
+		return (NULL);
+	ft_strcpy(rest, start);
+	return (free (str), rest);
 }
+
 
 char	*get_next_line(int fd)
 {
-	static char	*data;
+	static char	*rest;
 	char		*line;
+	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	data = ft_get_data(fd, data);
-	line = ft_get_line(data);
-	data = ft_update_data(data);
+	buffer = ft_read(fd, rest);
+	if (!buffer)
+		return (NULL);
+	line = ft_line(buffer);
+	rest = ft_rest(buffer);
 	return (line);
 }
